@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --black: #000000;
+  --dark-gray: #1a1a1a;
+  --red: #ff0000;
+  --light-gray: #cccccc;
+  --red-glow: rgba(255, 0, 0, 0.4);
+}
+
+* {
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  * {
+    cursor: auto;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--black);
+  color: var(--light-gray);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/* Custom cursor - red circular glow (only when not touch device) */
+.cursor-dot {
+  pointer-events: none;
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: var(--red);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px var(--red), 0 0 40px var(--red-glow);
+  z-index: 9999;
+  mix-blend-mode: screen;
+}
+
+.cursor-ring {
+  pointer-events: none;
+  position: fixed;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--red);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 15px var(--red-glow);
+  z-index: 9998;
+  transition: width 0.2s, height 0.2s, border-color 0.2s;
+}
+
+.logo-text {
+  color: #ffffff;
+  -webkit-text-stroke: 1px var(--red);
+  text-stroke: 1px var(--red);
+}
+
+/* Grid background */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(255, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Selection */
+::selection {
+  background: var(--red);
+  color: var(--black);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--red);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #cc0000;
+}
