@@ -33,6 +33,7 @@ async function appendToSheet(row: string[]) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log('Received registration fields:', Object.keys(body)); // Debugging: Check if fields match frontend
     const {
       teamHeadName,
       teamHeadPhone,
