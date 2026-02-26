@@ -14,8 +14,6 @@ async function appendToSheet(row: string[]) {
     throw new Error('Google Sheets ID is missing. Set GOOGLE_SHEET_ID in environment variables.');
   }
 
-  console.log(`Attempting to write to Sheet ID: ${GOOGLE_SHEET_ID.substring(0, 5)}...`);
-
   const auth = new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
@@ -34,7 +32,6 @@ async function appendToSheet(row: string[]) {
       requestBody: { values: [row] },
     });
   } catch (error: any) {
-    console.error('Google Sheets Append Error:', JSON.stringify(error.response?.data || error.message, null, 2));
     throw new Error(`Google Sheets Error: ${error.message}`);
   }
 }
@@ -42,15 +39,6 @@ async function appendToSheet(row: string[]) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    console.log('Received registration fields:', Object.keys(body)); // Debugging: Check if fields match frontend
-
-    // Debugging: Log environment variable status (safe to log)
-    console.log('Environment Check:', {
-      GOOGLE_SHEET_ID: (process.env.GOOGLE_SHEET_ID || process.env.GOOGLE_SHEETS_ID) ? '✅ Loaded' : '❌ MISSING',
-      GOOGLE_EMAIL: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ? '✅ Loaded' : '❌ MISSING',
-      GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY ? '✅ Loaded' : '❌ MISSING',
-    });
-
     const {
       teamHeadName,
       teamHeadPhone,
@@ -71,7 +59,6 @@ export async function POST(request: NextRequest) {
       !domain ||
       !screenshotUrl
     ) {
-      console.log('Validation failed. Missing fields.');
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
