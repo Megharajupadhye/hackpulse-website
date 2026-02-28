@@ -21,7 +21,7 @@ type FormState = {
   participant2Email: string;
   collegeName: string;
   domain: '' | (typeof DOMAINS)[number]['value'];
-  screenshotUrl: string;
+  utrNumber: string;
 };
 
 const initial: FormState = {
@@ -34,7 +34,7 @@ const initial: FormState = {
   participant2Email: '',
   collegeName: '',
   domain: '',
-  screenshotUrl: '',
+  utrNumber: '',
 };
 
 function validateEmail(email: string) {
@@ -45,7 +45,13 @@ function validatePhone(phone: string) {
   return /^\d{10}$/.test(phone);
 }
 
-const ACCEPTED_FORMATS = '.jpg,.jpeg,.png';
+function validateUtrNumber(utr: string) {
+  const trimmed = utr.trim();
+  if (!trimmed) return false;
+  if (trimmed.length < 8) return false;
+  if (/\s/.test(trimmed)) return false;
+  return true;
+}
 
 const NAME_ALLOWED = /^[A-Za-z ]+$/;
 function validateName(name: string) {
@@ -57,7 +63,6 @@ function validateName(name: string) {
 export default function RegisterPage() {
   const [form, setForm] = useState<FormState>(initial);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
-  const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -140,30 +145,25 @@ export default function RegisterPage() {
       }
     };
 
-  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const ext = file.name.split('.').pop()?.toLowerCase();
-    if (!['jpg', 'jpeg', 'png'].includes(ext || '')) {
-      setErrors((prev) => ({ ...prev, screenshotUrl: 'Only jpg, jpeg, png allowed' }));
+  const onUtrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\s/g, '');
+    setField('utrNumber', value);
+  };
+
+  const onUtrBlur = () => {
+    const value = form.utrNumber.trim();
+    if (!value) {
+      setErrors((prev) => ({ ...prev, utrNumber: 'UTR Number is required.' }));
       return;
     }
-    setErrors((prev) => ({ ...prev, screenshotUrl: undefined }));
-    setUploading(true);
-    try {
-      const fd = new FormData();
-      fd.append('file', file);
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: fd,
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Upload failed');
-      setForm((prev) => ({ ...prev, screenshotUrl: data.url }));
-    } catch (err) {
-      setErrors((prev) => ({ ...prev, screenshotUrl: (err as Error).message }));
-    } finally {
-      setUploading(false);
+    if (!validateUtrNumber(value)) {
+      if (value.length < 8) {
+        setErrors((prev) => ({ ...prev, utrNumber: 'UTR Number must be at least 8 characters.' }));
+      } else if (/\s/.test(value)) {
+        setErrors((prev) => ({ ...prev, utrNumber: 'UTR Number cannot contain spaces.' }));
+      } else {
+        setErrors((prev) => ({ ...prev, utrNumber: 'Enter a valid UTR Number.' }));
+      }
     }
   };
 
@@ -192,14 +192,24 @@ export default function RegisterPage() {
 
     if (!form.domain) next.domain = 'Domain selection is required.';
 
-    if (!form.screenshotUrl) next.screenshotUrl = 'Upload Payment Screenshot is required.';
+    if (!form.utrNumber.trim()) next.utrNumber = 'UTR Number is required.';
+    else if (!validateUtrNumber(form.utrNumber)) {
+      if (form.utrNumber.trim().length < 8) {
+        next.utrNumber = 'UTR Number must be at least 8 characters.';
+      } else if (/\s/.test(form.utrNumber.trim())) {
+        next.utrNumber = 'UTR Number cannot contain spaces.';
+      } else {
+        next.utrNumber = 'Enter a valid UTR Number.';
+      }
+    }
+
     setErrors(next);
     return Object.keys(next).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate() || submitting || uploading || !form.screenshotUrl) return;
+    if (!validate() || submitting) return;
     setSubmitting(true);
     try {
       const res = await fetch('/api/register', {
@@ -214,7 +224,7 @@ export default function RegisterPage() {
           p2Email: form.participant2Email,
           collegeName: form.collegeName,
           domain: form.domain,
-          screenshotUrl: form.screenshotUrl,
+          utrNumber: form.utrNumber,
         }),
       });
       const data = await res.json();
@@ -236,7 +246,8 @@ export default function RegisterPage() {
       validatePhone(form.participant2Phone) &&
       validateEmail(form.participant2Email) &&
       validateName(form.collegeName) &&
-      !!form.domain
+      !!form.domain &&
+      validateUtrNumber(form.utrNumber)
     );
   }, [
     form.collegeName,
@@ -247,9 +258,10 @@ export default function RegisterPage() {
     form.participant2Email,
     form.participant2Name,
     form.participant2Phone,
+    form.utrNumber,
   ]);
 
-  const canSubmit = allRequiredValid && !!form.screenshotUrl && !uploading && !submitting;
+  const canSubmit = allRequiredValid && !submitting;
 
   const inputClass = (hasError?: boolean) =>
     [
@@ -333,7 +345,7 @@ export default function RegisterPage() {
                 Registration
               </h1>
               <p className="text-white/70 mb-8">
-                Fill all details and upload the payment screenshot to submit.
+                Fill all details and enter your payment UTR number to submit.
               </p>
 
               <form
@@ -542,30 +554,20 @@ export default function RegisterPage() {
                     </div>
 
                     <div className="mt-6">
-                      <label className="block text-sm font-semibold text-black mb-2 text-center">
-                        Upload Payment Screenshot (Required)
+                      <label className="block text-sm font-semibold text-black mb-2">
+                        Enter UTR Number (Required)
                       </label>
-                      <p className="text-xs text-black/70 text-center mb-3">Accepted formats: jpg, jpeg, png</p>
-
-                      <div className="flex flex-col items-center gap-2">
-                        <input
-                          type="file"
-                          accept={ACCEPTED_FORMATS}
-                          onChange={handleFile}
-                          disabled={uploading}
-                          className="w-full max-w-md text-black/80 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border file:border-red file:bg-white file:text-black file:font-semibold file:hover:shadow-[0_0_18px_rgba(255,0,0,0.18)]"
-                        />
-
-                        {uploading && (
-                          <p className="text-sm text-black/70">Uploading…</p>
-                        )}
-                        {form.screenshotUrl && !uploading && (
-                          <p className="text-sm text-black/80 font-semibold">Screenshot uploaded.</p>
-                        )}
-                        {errors.screenshotUrl && (
-                          <p className="text-sm text-black/80 font-semibold">{errors.screenshotUrl}</p>
-                        )}
-                      </div>
+                      <input
+                        type="text"
+                        value={form.utrNumber}
+                        onChange={onUtrChange}
+                        onBlur={onUtrBlur}
+                        className={inputClass(!!errors.utrNumber)}
+                        placeholder="Enter your payment UTR number"
+                      />
+                      {errors.utrNumber && (
+                        <p className="mt-2 text-sm text-white/90">{errors.utrNumber}</p>
+                      )}
                     </div>
                   </div>
                 </motion.section>
