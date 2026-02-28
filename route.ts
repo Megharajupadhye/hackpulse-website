@@ -1,6 +1,8 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { NextResponse } from 'next/server';
 
+export const runtime = 'nodejs';
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -38,7 +40,7 @@ export async function POST(request: Request) {
       uploadStream.end(buffer);
     });
 
-    return NextResponse.json({ url: result.secure_url }, { status: 200 });
+    return NextResponse.json({ success: true, url: result.secure_url }, { status: 200 });
   } catch (error: any) {
     console.error('Upload Error:', error);
     return NextResponse.json(

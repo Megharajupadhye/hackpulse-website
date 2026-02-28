@@ -14,7 +14,7 @@ const cards = [
     title: 'Research & Development Cell (R&D)',
     description:
       'Championing research culture and academic excellence. The R&D Cell promotes technology advancement, collaborative research, and industry-academia partnerships. We enable students and faculty to push boundaries and contribute to real-world solutions.',
-    image: '/images/bcca.png',
+    image: '/images/rnd.png',
   },
 ];
 
