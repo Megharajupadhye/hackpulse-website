@@ -8,7 +8,7 @@ Your registration submissions are written to **Google Sheets** by the API route:
 It appends a new row to:
 
 - **Spreadsheet**: `GOOGLE_SHEET_ID`
-- **Tab**: `GOOGLE_SHEET_TAB` (defaults to `Registrations`)
+- **Tab**: `GOOGLE_SHEET_TAB` (defaults to `Sheet1`)
 - **Range**: `<TAB>!A1:J` (append)
 
 The columns written are:
@@ -41,7 +41,7 @@ The upload API route is:
 
 ### 1) View registrations in Google Sheets
 1. Open the Google Sheet whose ID matches `GOOGLE_SHEET_ID`.
-2. Open the tab that matches `GOOGLE_SHEET_TAB` (default: **`Registrations`**).
+2. Open the tab that matches `GOOGLE_SHEET_TAB` (default: **`Sheet1`**).
 3. New registrations appear as new rows.
 
 ### 2) If Sheets fails: view the local backup file
@@ -85,4 +85,3 @@ In that case, **the registration is not saved to Sheets**, so fixing env + shari
    - The `GOOGLE_SHEET_TAB` tab in Google Sheets.
    - `public/uploads/` for the uploaded screenshot file.
    - `data/registrations.jsonl` if Sheets is failing.
-

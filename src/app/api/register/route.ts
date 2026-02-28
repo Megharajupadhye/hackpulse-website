@@ -6,11 +6,12 @@ import path from 'path';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const GOOGLE_SHEET_TAB = process.env.GOOGLE_SHEET_TAB || 'Registrations';
+const GOOGLE_SHEET_TAB = process.env.GOOGLE_SHEET_TAB || 'Sheet1';
 
 async function appendToSheet(row: string[]) {
   // Check for both GOOGLE_SHEET_ID and GOOGLE_SHEETS_ID (common typo)
-  const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID || process.env.GOOGLE_SHEETS_ID;
+  // Fallback to the ID provided in the URL if env var is not set
+  const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID || process.env.GOOGLE_SHEETS_ID || '10pjil9DPt2oIamPXuObVJ2upvhJdqfmZzpSna6Ue5x0';
 
   if (!GOOGLE_SHEET_ID) {
     throw new Error('Google Sheets ID is missing. Set GOOGLE_SHEET_ID in environment variables.');
@@ -23,9 +24,9 @@ async function appendToSheet(row: string[]) {
     } catch (e: any) {
       throw new Error(`Failed to parse GOOGLE_SERVICE_ACCOUNT_JSON: ${e.message}`);
     }
-  } else if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY) {
+  } else if ((process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || process.env.GOOGLE_CLIENT_EMAIL) && process.env.GOOGLE_PRIVATE_KEY) {
     credentials = {
-      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || process.env.GOOGLE_CLIENT_EMAIL,
       private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
     };
   } else {

@@ -1,65 +1,48 @@
-import { NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
-import { Readable } from 'stream';
+import { NextResponse } from 'next/server';
 
-// Configure Cloudinary with credentials from environment variables
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-/**
- * Handles the POST request for uploading a file to Cloudinary.
- * @param request - The incoming Next.js API request object.
- */
 export async function POST(request: Request) {
-  // 1. Parse the incoming form data
-  const formData = await request.formData();
-  const file = formData.get('file') as File | null;
-
-  if (!file) {
-    return NextResponse.json({ error: 'No file provided.' }, { status: 400 });
-  }
-
-  // 2. Convert the file to a buffer
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-
-  // 3. Upload the file to Cloudinary using a stream
   try {
-    const response = await new Promise((resolve, reject) => {
+    const formData = await request.formData();
+    const file = formData.get('file') as File;
+
+    if (!file) {
+      return NextResponse.json(
+        { error: 'No file uploaded' },
+        { status: 400 }
+      );
+    }
+
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    const result = await new Promise<any>((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
-          // Optional: specify a folder in Cloudinary
-          folder: 'hackpulse_payments',
+          folder: 'hackpulse-payments',
         },
         (error, result) => {
           if (error) {
-            console.error('Cloudinary Upload Error:', error);
-            return reject(error);
+            reject(error);
+          } else {
+            resolve(result);
           }
-          resolve(result);
         }
       );
-
-      // Pipe the buffer to the upload stream
-      const readableStream = new Readable();
-      readableStream._read = () => {}; // _read is required but can be a no-op
-      readableStream.push(buffer);
-      readableStream.push(null);
-      readableStream.pipe(uploadStream);
+      uploadStream.end(buffer);
     });
 
-    // 4. Return the secure URL of the uploaded file
-    return NextResponse.json({
-      secure_url: (response as any).secure_url,
-    });
-
-  } catch (error) {
-    console.error('Server-side upload error:', error);
+    return NextResponse.json({ url: result.secure_url }, { status: 200 });
+  } catch (error: any) {
+    console.error('Upload Error:', error);
     return NextResponse.json(
-      { error: 'Cloudinary upload failed.' },
+      { error: 'Upload failed', details: error.message },
       { status: 500 }
     );
   }
