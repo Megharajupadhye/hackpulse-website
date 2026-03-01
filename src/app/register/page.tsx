@@ -48,8 +48,8 @@ function validatePhone(phone: string) {
 function validateUtrNumber(utr: string) {
   const trimmed = utr.trim();
   if (!trimmed) return false;
-  if (trimmed.length < 8) return false;
-  if (/\s/.test(trimmed)) return false;
+  if (trimmed.length < 10 || trimmed.length > 22) return false;
+  if (!/^[A-Z0-9]+$/.test(trimmed)) return false;
   return true;
 }
 
@@ -146,8 +146,17 @@ export default function RegisterPage() {
     };
 
   const onUtrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\s/g, '');
-    setField('utrNumber', value);
+    const raw = e.target.value;
+    const filtered = raw.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 22);
+    setField('utrNumber', filtered);
+    if (raw !== filtered) {
+      setErrors((prev) => ({
+        ...prev,
+        utrNumber: 'UTR must contain only uppercase letters and numbers (10–22 characters).',
+      }));
+    } else if (filtered && validateUtrNumber(filtered)) {
+      setErrors((prev) => ({ ...prev, utrNumber: undefined }));
+    }
   };
 
   const onUtrBlur = () => {
@@ -157,13 +166,10 @@ export default function RegisterPage() {
       return;
     }
     if (!validateUtrNumber(value)) {
-      if (value.length < 8) {
-        setErrors((prev) => ({ ...prev, utrNumber: 'UTR Number must be at least 8 characters.' }));
-      } else if (/\s/.test(value)) {
-        setErrors((prev) => ({ ...prev, utrNumber: 'UTR Number cannot contain spaces.' }));
-      } else {
-        setErrors((prev) => ({ ...prev, utrNumber: 'Enter a valid UTR Number.' }));
-      }
+      setErrors((prev) => ({
+        ...prev,
+        utrNumber: 'UTR must contain only uppercase letters and numbers (10–22 characters).',
+      }));
     }
   };
 
@@ -194,13 +200,7 @@ export default function RegisterPage() {
 
     if (!form.utrNumber.trim()) next.utrNumber = 'UTR Number is required.';
     else if (!validateUtrNumber(form.utrNumber)) {
-      if (form.utrNumber.trim().length < 8) {
-        next.utrNumber = 'UTR Number must be at least 8 characters.';
-      } else if (/\s/.test(form.utrNumber.trim())) {
-        next.utrNumber = 'UTR Number cannot contain spaces.';
-      } else {
-        next.utrNumber = 'Enter a valid UTR Number.';
-      }
+      next.utrNumber = 'UTR must contain only uppercase letters and numbers (10–22 characters).';
     }
 
     setErrors(next);
@@ -271,14 +271,14 @@ export default function RegisterPage() {
     ].join(' ');
 
   const sectionTitleClass =
-    'font-heading font-bold text-xl text-white border-l-2 border-red pl-4';
+    'font-heading font-bold text-lg sm:text-xl lg:text-2xl text-white border-l-2 border-red pl-3 sm:pl-4';
 
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4">
+    <div className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 w-full max-w-full overflow-x-hidden">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-2xl mx-auto"
+        className="max-w-2xl mx-auto w-full"
       >
         <AnimatePresence mode="wait">
           {submitted ? (
@@ -297,10 +297,10 @@ export default function RegisterPage() {
                   </svg>
                 </div>
               </div>
-              <h1 className="font-heading text-3xl font-bold text-white text-center mb-2">
+              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-white text-center mb-2 px-2">
                 Registration Successful
               </h1>
-              <p className="text-white/70 text-center mb-8">
+              <p className="text-white/70 text-sm sm:text-base text-center mb-6 sm:mb-8 px-2">
                 Your team has been submitted. Join the official WhatsApp group for updates.
               </p>
 
@@ -341,16 +341,16 @@ export default function RegisterPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <h1 className="font-heading text-3xl font-bold text-white mb-2">
+              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
                 Registration
               </h1>
-              <p className="text-white/70 mb-8">
+              <p className="text-white/70 text-sm sm:text-base mb-6 sm:mb-8">
                 Fill all details and enter your payment UTR number to submit.
               </p>
 
               <form
                 onSubmit={handleSubmit}
-                className="rounded-2xl bg-dark-gray/70 border border-dark-gray/60 p-6 sm:p-8 shadow-[0_0_40px_rgba(0,0,0,0.4)] space-y-8"
+                className="rounded-2xl bg-dark-gray/70 border border-dark-gray/60 p-4 sm:p-6 lg:p-8 shadow-[0_0_40px_rgba(0,0,0,0.4)] space-y-6 sm:space-y-8"
               >
                 <section className="space-y-5">
                   <h2 className={sectionTitleClass}>Team Details</h2>
@@ -530,25 +530,25 @@ export default function RegisterPage() {
                 >
                   <h2 className={sectionTitleClass}>Registration Payment</h2>
 
-                  <div className="rounded-2xl border-2 border-red bg-white p-5 sm:p-6 shadow-[0_0_28px_rgba(255,0,0,0.18)]">
+                  <div className="rounded-2xl border-2 border-red bg-white p-4 sm:p-5 lg:p-6 shadow-[0_0_28px_rgba(255,0,0,0.18)]">
                     <div className="text-center space-y-2">
-                      <p className="text-sm font-semibold text-black">
+                      <p className="text-xs sm:text-sm font-semibold text-black break-words">
                         College Name: <span className="font-bold">{form.collegeName.trim() || '—'}</span>
                       </p>
-                      <p className="text-sm font-semibold text-black">
+                      <p className="text-xs sm:text-sm font-semibold text-black break-words">
                         Selected Domain: <span className="font-bold">{form.domain || '—'}</span>
                       </p>
                     </div>
 
-                    <div className="mt-5 flex flex-col items-center">
-                      <div className="relative w-52 h-52 sm:w-60 sm:h-60 rounded-2xl border border-red/70 shadow-[0_0_18px_rgba(255,0,0,0.18)] overflow-hidden bg-white p-2 flex items-center justify-center">
+                    <div className="mt-4 sm:mt-5 flex flex-col items-center">
+                      <div className="relative w-full max-w-[200px] sm:max-w-[240px] aspect-square rounded-2xl border border-red/70 shadow-[0_0_18px_rgba(255,0,0,0.18)] overflow-hidden bg-white p-2 flex items-center justify-center">
                         <img
                           src="/images/payment.jpeg"
                           alt="UPI Payment QR Code"
                           className="max-w-full max-h-full object-contain w-full h-full"
                         />
                       </div>
-                      <p className="mt-3 text-black font-semibold">
+                      <p className="mt-3 text-xs sm:text-sm text-black font-semibold">
                         Scan and pay ₹500 per team.
                       </p>
                     </div>
@@ -576,7 +576,7 @@ export default function RegisterPage() {
                   type="submit"
                   disabled={!canSubmit}
                   className={[
-                    'w-full py-4 rounded-xl bg-black text-white border-2 border-red font-heading font-bold text-lg transition-all',
+                    'w-full py-3 sm:py-4 rounded-xl bg-black text-white border-2 border-red font-heading font-bold text-base sm:text-lg transition-all',
                     'shadow-[0_0_20px_rgba(255,0,0,0.14)] hover:shadow-[0_0_30px_rgba(255,0,0,0.22)]',
                     'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none',
                   ].join(' ')}

@@ -3,6 +3,7 @@ import { Orbitron, Inter } from 'next/font/google';
 import './globals.css';
 import CustomCursor from '@/components/CustomCursor';
 import Footer from '@/components/Footer';
+import NeuralNetworkBackground from '@/components/NeuralNetworkBackground';
 
 const orbitron = Orbitron({
   subsets: ['latin'],
@@ -47,9 +48,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${orbitron.variable} ${inter.variable}`}>
-      <body className="antialiased bg-black text-light-gray min-h-screen">
+      <body className="antialiased bg-black text-light-gray min-h-screen overflow-x-hidden relative">
+        <NeuralNetworkBackground />
         <CustomCursor />
-        <main className="min-h-screen flex flex-col">{children}</main>
+        <main className="min-h-screen flex flex-col w-full overflow-x-hidden relative z-10">{children}</main>
         <Footer />
       </body>
     </html>

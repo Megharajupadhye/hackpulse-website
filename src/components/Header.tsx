@@ -18,15 +18,15 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="w-full">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+    <header className="w-full max-w-full overflow-x-hidden relative z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <Link
           href="/"
-          className="flex items-center gap-2 font-heading font-bold text-lg logo-text transition-colors"
+          className="flex items-center gap-2 font-heading font-bold text-base sm:text-lg logo-text transition-colors flex-shrink-0"
         >
-          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full border border-red text-red bg-black/60">
+          <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full border border-red text-red bg-black/60 flex-shrink-0">
             <svg
-              className="w-4 h-4"
+              className="w-3 h-3 sm:w-4 sm:h-4"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -38,22 +38,22 @@ export default function Header() {
               <path d="M5 10v10h14V10" />
             </svg>
           </span>
-          <span>HackPulse 2026</span>
+          <span className="truncate">HackPulse 2026</span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-4 lg:gap-6 flex-shrink-0">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-light-gray/90 hover:text-red transition-colors"
+              className="text-xs lg:text-sm text-light-gray/90 hover:text-red transition-colors whitespace-nowrap"
             >
               {link.label}
             </Link>
           ))}
           <Link
             href="/register"
-            className="px-4 py-2 rounded-md bg-red text-black font-semibold text-sm hover:shadow-red-glow transition-shadow"
+            className="px-3 lg:px-4 py-2 rounded-md bg-red text-black font-semibold text-xs lg:text-sm hover:shadow-red-glow transition-shadow whitespace-nowrap"
           >
             Register Now
           </Link>
@@ -61,9 +61,10 @@ export default function Header() {
 
         <button
           type="button"
-          className="md:hidden p-2 text-light-gray"
+          className="md:hidden p-2 text-light-gray flex-shrink-0"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
+          aria-expanded={open}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {open ? (
@@ -81,15 +82,15 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-dark-gray/50 bg-black"
+            className="md:hidden border-t border-dark-gray/50 bg-black w-full overflow-hidden"
           >
-            <nav className="flex flex-col p-4 gap-2">
+            <nav className="flex flex-col px-4 py-4 gap-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="py-2 text-light-gray hover:text-red"
+                  className="py-2 text-sm text-light-gray hover:text-red transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -97,7 +98,7 @@ export default function Header() {
               <Link
                 href="/register"
                 onClick={() => setOpen(false)}
-                className="mt-2 py-3 text-center rounded-md bg-red text-black font-semibold"
+                className="mt-2 py-3 text-center rounded-md bg-red text-black font-semibold text-sm w-full"
               >
                 Register Now
               </Link>

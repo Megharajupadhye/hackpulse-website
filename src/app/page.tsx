@@ -15,12 +15,12 @@ import CTASection from '@/components/sections/CTASection';
 
 export default function Home() {
   return (
-    <main className="bg-black min-h-screen text-light-gray selection:bg-red selection:text-white">
+    <main className="bg-black min-h-screen text-light-gray selection:bg-red selection:text-white w-full max-w-full overflow-x-hidden">
       {/* 1. Top Branding Section (Bharatesh College...) */}
       <TopBrandingSection />
 
       {/* 2. Navigation Bar - Sticky below branding */}
-      <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+      <div className="sticky top-0 z-50 bg-black/60 backdrop-blur-sm border-b border-white/10 w-full max-w-full">
         <Header />
       </div>
 
