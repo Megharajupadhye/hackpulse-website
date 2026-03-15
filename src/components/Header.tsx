@@ -51,12 +51,9 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/register"
-            className="px-3 lg:px-4 py-2 rounded-md bg-red text-black font-semibold text-xs lg:text-sm hover:shadow-red-glow transition-shadow whitespace-nowrap"
-          >
-            Register Now
-          </Link>
+          <span className="px-3 lg:px-4 py-2 rounded-md border border-red/60 text-red font-semibold text-xs lg:text-sm bg-black/60 cursor-not-allowed whitespace-nowrap">
+            Registration Closed
+          </span>
         </nav>
 
         <button
@@ -95,13 +92,9 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="/register"
-                onClick={() => setOpen(false)}
-                className="mt-2 py-3 text-center rounded-md bg-red text-black font-semibold text-sm w-full"
-              >
-                Register Now
-              </Link>
+              <span className="mt-2 py-3 text-center rounded-md border border-red/60 text-red font-semibold text-sm w-full bg-black/60 cursor-not-allowed">
+                Registration Closed
+              </span>
             </nav>
           </motion.div>
         )}

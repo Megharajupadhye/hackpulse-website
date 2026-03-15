@@ -281,320 +281,49 @@ export default function RegisterPage() {
         className="max-w-2xl mx-auto w-full"
       >
         <AnimatePresence mode="wait">
-          {submitted ? (
-            <motion.div
-              key="success"
-              initial={{ opacity: 0, scale: 0.98, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.98, y: 10 }}
-              transition={{ duration: 0.35 }}
-              className="rounded-2xl bg-dark-gray/70 border border-dark-gray/60 p-6 sm:p-8 shadow-[0_0_40px_rgba(0,0,0,0.4)]"
-            >
-              <div className="flex justify-center mb-6">
-                <div className="w-16 h-16 rounded-full border-2 border-red shadow-[0_0_24px_rgba(255,0,0,0.22)] flex items-center justify-center">
-                  <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 6L9 17l-5-5" />
-                  </svg>
-                </div>
+          <motion.div
+            key="closed"
+            initial={{ opacity: 0, scale: 0.98, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: 10 }}
+            transition={{ duration: 0.35 }}
+            className="rounded-2xl bg-dark-gray/70 border border-dark-gray/60 p-6 sm:p-8 shadow-[0_0_40px_rgba(0,0,0,0.4)] text-center"
+          >
+            <div className="flex justify-center mb-6">
+              <div className="w-16 h-16 rounded-full border-2 border-red shadow-[0_0_24px_rgba(255,0,0,0.22)] flex items-center justify-center bg-black/70">
+                <span className="text-2xl" aria-hidden="true">
+                  🚨
+                </span>
               </div>
-              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-white text-center mb-2 px-2">
-                Registration Successful
-              </h1>
-              <p className="text-white/70 text-sm sm:text-base text-center mb-6 sm:mb-8 px-2">
-                Your team has been submitted. Join the official WhatsApp group for updates.
-              </p>
+            </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a
-                  href={WHATSAPP_GROUP_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-3 px-6 py-3 rounded-xl bg-black text-white border-2 border-red shadow-[0_0_20px_rgba(255,0,0,0.16)] hover:shadow-[0_0_30px_rgba(255,0,0,0.26)] transition-shadow"
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 32 32" fill="none">
-                    <path
-                      d="M16 3C9.1 3 3.5 8.4 3.5 15.1c0 2.6.9 5.1 2.4 7.1L4.6 28.8l6.9-1.2c1.4.7 3 .9 4.6.9 6.9 0 12.5-5.4 12.5-12.1S22.9 3 16 3Z"
-                      stroke="#ffffff"
-                      strokeWidth="2"
-                      opacity="0.9"
-                    />
-                    <path
-                      d="M22.4 18.7c-.3-.1-1.9-.9-2.2-1-.3-.1-.6-.1-.8.2-.2.3-.9 1-1.1 1.2-.2.2-.4.2-.7.1-.3-.1-1.3-.5-2.5-1.5-.9-.8-1.6-1.7-1.8-2-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.6.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.8-1.9-1.1-2.6-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.5.1-.7.4-.2.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.7.6.7.2 1.3.2 1.8.1.5-.1 1.6-.7 1.8-1.3.2-.6.2-1.1.1-1.3-.1-.2-.3-.2-.6-.3Z"
-                      fill="#ffffff"
-                      opacity="0.9"
-                    />
-                  </svg>
-                  <span className="font-heading font-bold">Join WhatsApp Group</span>
-                </a>
-                <Link
-                  href="/"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-black text-white border-2 border-red hover:shadow-[0_0_30px_rgba(255,0,0,0.18)] transition-shadow"
-                >
-                  Back to Home
-                </Link>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="form"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
-                Registration
-              </h1>
-              <p className="text-white/70 text-sm sm:text-base mb-6 sm:mb-8">
-                Fill all details and enter your payment UTR number to submit.
-              </p>
+            <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
+              Registration Closed
+            </h1>
 
-              <form
-                onSubmit={handleSubmit}
-                className="rounded-2xl bg-dark-gray/70 border border-dark-gray/60 p-4 sm:p-6 lg:p-8 shadow-[0_0_40px_rgba(0,0,0,0.4)] space-y-6 sm:space-y-8"
+            <p className="text-white/80 text-sm sm:text-base leading-relaxed mb-4">
+              Thank you for the overwhelming response to HackPulse 2026.
+              <br />
+              We have successfully reached the maximum limit of 20 participating teams.
+            </p>
+
+            <p className="text-white/80 text-sm sm:text-base mb-4">
+              Registrations are now officially closed.
+            </p>
+
+            <p className="text-white/60 text-xs sm:text-sm mb-6">
+              For queries, please contact the HackPulse organizing team.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-black text-white border-2 border-red hover:shadow-[0_0_30px_rgba(255,0,0,0.18)] transition-shadow"
               >
-                <section className="space-y-5">
-                  <h2 className={sectionTitleClass}>Team Details</h2>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm text-white/80 mb-1">Participant 1 Name</label>
-                      <input
-                        type="text"
-                        value={form.participant1Name}
-                        onChange={onNameChange('participant1Name')}
-                        onBlur={onNameBlur('participant1Name')}
-                        className={inputClass(!!errors.participant1Name)}
-                        placeholder="Full name"
-                        autoComplete="name"
-                      />
-                      {errors.participant1Name && (
-                        <p className="mt-2 text-sm text-white/90">{errors.participant1Name}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm text-white/80 mb-1">Participant 1 Phone Number</label>
-                      <input
-                        type="tel"
-                        inputMode="numeric"
-                        value={form.participant1Phone}
-                        onChange={onPhoneChange('participant1Phone')}
-                        onBlur={onPhoneBlur('participant1Phone')}
-                        className={inputClass(!!errors.participant1Phone)}
-                        placeholder="10-digit number"
-                        autoComplete="tel"
-                      />
-                      {errors.participant1Phone && (
-                        <p className="mt-2 text-sm text-white/90">{errors.participant1Phone}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm text-white/80 mb-1">Participant 1 Email</label>
-                      <input
-                        type="email"
-                        value={form.participant1Email}
-                        onChange={onTextChange('participant1Email')}
-                        onBlur={onEmailBlur('participant1Email')}
-                        className={inputClass(!!errors.participant1Email)}
-                        placeholder="name@email.com"
-                        autoComplete="email"
-                      />
-                      {errors.participant1Email && (
-                        <p className="mt-2 text-sm text-white/90">{errors.participant1Email}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="inline-flex items-center gap-3 text-white/85 select-none">
-                        <input
-                          type="checkbox"
-                          checked={form.participant1Leader}
-                          onChange={(e) => setField('participant1Leader', e.target.checked)}
-                          className="w-5 h-5 accent-red"
-                        />
-                        Mark as Team Leader
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="h-px bg-dark-gray/70" />
-
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm text-white/80 mb-1">Participant 2 Name</label>
-                      <input
-                        type="text"
-                        value={form.participant2Name}
-                        onChange={onNameChange('participant2Name')}
-                        onBlur={onNameBlur('participant2Name')}
-                        className={inputClass(!!errors.participant2Name)}
-                        placeholder="Full name"
-                        autoComplete="name"
-                      />
-                      {errors.participant2Name && (
-                        <p className="mt-2 text-sm text-white/90">{errors.participant2Name}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm text-white/80 mb-1">Participant 2 Phone Number</label>
-                      <input
-                        type="tel"
-                        inputMode="numeric"
-                        value={form.participant2Phone}
-                        onChange={onPhoneChange('participant2Phone')}
-                        onBlur={onPhoneBlur('participant2Phone')}
-                        className={inputClass(!!errors.participant2Phone)}
-                        placeholder="10-digit number"
-                        autoComplete="tel"
-                      />
-                      {errors.participant2Phone && (
-                        <p className="mt-2 text-sm text-white/90">{errors.participant2Phone}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm text-white/80 mb-1">Participant 2 Email</label>
-                      <input
-                        type="email"
-                        value={form.participant2Email}
-                        onChange={onTextChange('participant2Email')}
-                        onBlur={onEmailBlur('participant2Email')}
-                        className={inputClass(!!errors.participant2Email)}
-                        placeholder="name@email.com"
-                        autoComplete="email"
-                      />
-                      {errors.participant2Email && (
-                        <p className="mt-2 text-sm text-white/90">{errors.participant2Email}</p>
-                      )}
-                    </div>
-                  </div>
-                </section>
-
-                <section className="space-y-5">
-                  <h2 className={sectionTitleClass}>College & Domain</h2>
-
-                  <div>
-                    <label className="block text-sm text-white/80 mb-1">College Name</label>
-                    <input
-                      type="text"
-                      value={form.collegeName}
-                      onChange={onNameChange('collegeName')}
-                      onBlur={onNameBlur('collegeName')}
-                      className={inputClass(!!errors.collegeName)}
-                      placeholder="Bharatesh College of Computer Applications"
-                    />
-                    {errors.collegeName && (
-                      <p className="mt-2 text-sm text-white/90">{errors.collegeName}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <p className="text-sm text-white/80 mb-3">Domain Selection</p>
-                    <div className="space-y-3">
-                      {DOMAINS.map((d) => {
-                        const checked = form.domain === d.value;
-                        return (
-                          <label
-                            key={d.value}
-                            className={[
-                              'flex items-center gap-3 rounded-xl border px-4 py-3 cursor-pointer transition-all',
-                              checked
-                                ? 'border-red shadow-[0_0_24px_rgba(255,0,0,0.12)] bg-black/35'
-                                : 'border-dark-gray/70 bg-black/25 hover:border-red/70',
-                            ].join(' ')}
-                          >
-                            <input
-                              type="radio"
-                              name="domain"
-                              value={d.value}
-                              checked={checked}
-                              onChange={() => setField('domain', d.value)}
-                              className="w-4 h-4 accent-red"
-                            />
-                            <span className="text-white font-medium">{d.label}</span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                    {errors.domain && <p className="mt-2 text-sm text-white/90">{errors.domain}</p>}
-                  </div>
-                </section>
-
-                <motion.section
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35 }}
-                  className="space-y-5"
-                >
-                  <h2 className={sectionTitleClass}>Registration Payment</h2>
-
-                  <div className="rounded-2xl border-2 border-red bg-white p-4 sm:p-5 lg:p-6 shadow-[0_0_28px_rgba(255,0,0,0.18)]">
-                    <div className="text-center space-y-2">
-                      <p className="text-xs sm:text-sm font-semibold text-black break-words">
-                        College Name: <span className="font-bold">{form.collegeName.trim() || '—'}</span>
-                      </p>
-                      <p className="text-xs sm:text-sm font-semibold text-black break-words">
-                        Selected Domain: <span className="font-bold">{form.domain || '—'}</span>
-                      </p>
-                    </div>
-
-                    <div className="mt-4 sm:mt-5 flex flex-col items-center">
-                      <div className="relative w-full max-w-[200px] sm:max-w-[240px] aspect-square rounded-2xl border border-red/70 shadow-[0_0_18px_rgba(255,0,0,0.18)] overflow-hidden bg-white p-2 flex items-center justify-center">
-                        <img
-                          src="/images/payment.jpeg"
-                          alt="UPI Payment QR Code"
-                          className="max-w-full max-h-full object-contain w-full h-full"
-                        />
-                      </div>
-                      <p className="mt-3 text-xs sm:text-sm text-black font-semibold">
-                        Scan and pay ₹500 per team.
-                      </p>
-                    </div>
-
-                    <div className="mt-6">
-                      <label className="block text-sm font-semibold text-black mb-2">
-                        Enter UTR Number (Required)
-                      </label>
-                      <input
-                        type="text"
-                        value={form.utrNumber}
-                        onChange={onUtrChange}
-                        onBlur={onUtrBlur}
-                        className={inputClass(!!errors.utrNumber)}
-                        placeholder="Enter your payment UTR number"
-                      />
-                      {errors.utrNumber && (
-                        <p className="mt-2 text-sm text-white/90">{errors.utrNumber}</p>
-                      )}
-                    </div>
-                  </div>
-                </motion.section>
-
-                <button
-                  type="submit"
-                  disabled={!canSubmit}
-                  className={[
-                    'w-full py-3 sm:py-4 rounded-xl bg-black text-white border-2 border-red font-heading font-bold text-base sm:text-lg transition-all',
-                    'shadow-[0_0_20px_rgba(255,0,0,0.14)] hover:shadow-[0_0_30px_rgba(255,0,0,0.22)]',
-                    'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none',
-                  ].join(' ')}
-                >
-                  {submitting ? 'Submitting…' : 'Submit Registration'}
-                </button>
-              </form>
-
-              <p className="mt-6 text-center">
-                <Link
-                  href="/"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-black text-white border-2 border-red hover:shadow-[0_0_28px_rgba(255,0,0,0.18)] transition-shadow"
-                >
-                  Back to Home
-                </Link>
-              </p>
-            </motion.div>
-          )}
+                Back to Home
+              </Link>
+            </div>
+          </motion.div>
         </AnimatePresence>
       </motion.div>
     </div>

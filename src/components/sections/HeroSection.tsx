@@ -81,12 +81,9 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div variants={item} className="pt-6 sm:pt-8">
-            <Link
-              href="/register"
-              className="inline-block w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-lg bg-black text-white border-2 border-red font-heading font-bold text-base sm:text-lg shadow-[0_0_20px_rgba(255,0,0,0.18)] hover:shadow-[0_0_30px_rgba(255,0,0,0.28)] transition-all duration-300 hover:scale-105"
-            >
-              Register Now
-            </Link>
+            <div className="inline-block w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-lg bg-black/70 text-red border-2 border-red font-heading font-bold text-base sm:text-lg shadow-[0_0_20px_rgba(255,0,0,0.18)] cursor-not-allowed">
+              Registration Closed
+            </div>
           </motion.div>
         </motion.div>
       </div>

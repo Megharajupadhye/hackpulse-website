@@ -28,7 +28,7 @@ export default function ContactSection() {
           className="space-y-6 text-light-gray/90"
         >
           <div>
-            <p className="font-heading font-semibold text-light-gray">Event Head</p>
+            <p className="font-heading font-semibold text-light-gray">Event Coordinator</p>
             <a
               href="tel:+919686814550"
               className="text-red hover:underline"
